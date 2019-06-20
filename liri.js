@@ -29,6 +29,7 @@ inquirer.prompt([
                     }
                 ])
                     .then(function (answer) {
+                        makeASCII("Concert Venues");
                         concertSearch(answer.choice.trim());
                     });
                 break;
@@ -41,6 +42,7 @@ inquirer.prompt([
                     }
                 ])
                     .then(function (answer) {
+                        makeASCII("Top Search Result");
                         spotifySearch(answer.choice.trim());
                     });
                 break;
@@ -57,6 +59,7 @@ inquirer.prompt([
                     });
                 break;
             case "Surprise me.":
+                makeASCII("Is this what you wanted?")
                 surprise();
                 break;
         }
@@ -67,11 +70,11 @@ function concertSearch(performer) {
         .get("https://rest.bandsintown.com/artists/" + performer + "/events?app_id=codingbootcamp")
         .then(function (response) {
             for (var i = 0; i < response.data.length; i++) {
-                console.log("====================================================================");
-                console.log(response.data[i].venue.name);
-                console.log(response.data[i].venue.city);
-                console.log(moment(response.data[i].datetime).format('MM DD YYYY'));
-                console.log("====================================================================");
+                console.log("=======================================================================================");
+                console.log("Venue Name: " + response.data[i].venue.name);
+                console.log("City: " + response.data[i].venue.city);
+                console.log("Date(MM/DD/YYYY): " + moment(response.data[i].datetime).format('MM DD YYYY'));
+                console.log("=======================================================================================");
             }
         })
         .catch(function (error) {
@@ -95,12 +98,12 @@ function spotifySearch(song) {
     spotify
         .search({ type: 'track', query: song, limit: 1 })
         .then(function (response) {
-            console.log("====================================================================");
-            console.log(response.tracks.items[0].album.artists[0].name);
-            console.log(response.tracks.items[0].name);
-            console.log(response.tracks.items[0].external_urls.spotify);
-            console.log(response.tracks.items[0].album.name);
-            console.log("====================================================================");
+            console.log("=======================================================================================");
+            console.log("Artist/Band: " + response.tracks.items[0].album.artists[0].name);
+            console.log("Song: " + response.tracks.items[0].name);
+            console.log("Album: " + response.tracks.items[0].album.name);
+            console.log("Spotify Song Link: " + response.tracks.items[0].external_urls.spotify);
+            console.log("=======================================================================================");
         })
         .catch(function (err) {
             console.log(err);
@@ -110,17 +113,17 @@ function spotifySearch(song) {
 function movieSearch(movie) {
     axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
         function (response) {
-            console.log("====================================================================");
-            console.log(response.data.Title);
-            console.log(response.data.Year);
-            console.log(response.data.imdbRating);
-            console.log(response.data.Ratings[1].Value);
-            console.log(response.data.Country);
-            console.log(response.data.Language);
-            console.log(response.data.Plot);
-            console.log(response.data.Actors);
-            console.log("====================================================================");
-            console.log(response.data);
+            makeASCII(response.data.Title);
+            console.log("=======================================================================================");
+            console.log("Title: " + response.data.Title);
+            console.log("Year: " + response.data.Year);
+            console.log("IMDB Rating: " + response.data.imdbRating);
+            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+            console.log("Country: " + response.data.Country);
+            console.log("Language: " + response.data.Language);
+            console.log("Plot: " + response.data.Plot);
+            console.log("Actors: " + response.data.Actors);
+            console.log("=======================================================================================");
         })
         .catch(function (error) {
             if (error.response) {
@@ -151,13 +154,13 @@ function surprise() {
     });
 }
 
-function makeACSII(text) {
+function makeASCII(text) {
     axios
         .get("http://artii.herokuapp.com/make?text=" + text + "&font=slant")
         .then(function (response) {
-            console.log("********************************************************************");
+            console.log("***************************************************************************************");
             console.log(response.data);
-            console.log("********************************************************************");
+            console.log("***************************************************************************************");
         })
         .catch(function (error) {
             if (error.response) {
