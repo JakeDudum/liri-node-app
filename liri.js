@@ -13,7 +13,7 @@ inquirer.prompt([
     {
         type: "list",
         message: "What would you like to do?",
-        choices: ["Search for concerts.", "Search Spotify for songs."],
+        choices: ["Search for concerts.", "Search Spotify for songs.", "Search for movies."],
         name: "selection"
     }
 ])
@@ -43,6 +43,18 @@ inquirer.prompt([
                         spotifySearch(answer.choice.trim());
                     });
                 break;
+            case "Search for movies.":
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        message: "What is the name of the movie you are searching for?",
+                        name: "choice"
+                    }
+                ])
+                    .then(function (answer) {
+                        movieSearch(answer.choice.trim());
+                    });
+                break;
         }
     });
 
@@ -60,8 +72,11 @@ function concertSearch(performer) {
         })
         .catch(function (error) {
             if (error.response) {
+                console.log("---------------Data---------------");
                 console.log(error.response.data);
+                console.log("---------------Status---------------");
                 console.log(error.response.status);
+                console.log("---------------Status---------------");
                 console.log(error.response.headers);
             } else if (error.request) {
                 console.log(error.request);
@@ -85,6 +100,40 @@ function spotifySearch(song) {
         })
         .catch(function (err) {
             console.log(err);
+        });
+}
+
+function movieSearch(movie) {
+    axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
+        function (response) {
+            console.log("====================================================================");
+            console.log(response.data.Title);
+            console.log(response.data.Year);
+            console.log(response.data.imdbRating);
+            console.log(response.data.Ratings[1].Value);
+            console.log(response.data.Country);
+            console.log(response.data.Language);
+            console.log(response.data.Plot);
+            console.log(response.data.Actors);
+            console.log("====================================================================");
+            console.log(response.data);
+        })
+        .catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
         });
 }
 
