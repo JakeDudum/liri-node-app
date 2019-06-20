@@ -8,12 +8,13 @@ require('dotenv').config();
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var inquirer = require("inquirer");
+var fs = require("fs");
 
 inquirer.prompt([
     {
         type: "list",
         message: "What would you like to do?",
-        choices: ["Search for concerts.", "Search Spotify for songs.", "Search for movies."],
+        choices: ["Search for concerts.", "Search Spotify for songs.", "Search for movies.", "Surprise me."],
         name: "selection"
     }
 ])
@@ -54,6 +55,9 @@ inquirer.prompt([
                     .then(function (answer) {
                         movieSearch(answer.choice.trim());
                     });
+                break;
+            case "Surprise me.":
+                surprise();
                 break;
         }
     });
@@ -122,6 +126,41 @@ function movieSearch(movie) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        });
+}
+
+function surprise() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        var dataArr = data.split(",");
+        spotifySearch(dataArr[1]);
+    });
+}
+
+function makeACSII(text) {
+    axios
+        .get("http://artii.herokuapp.com/make?text=" + text + "&font=slant")
+        .then(function (response) {
+            console.log("********************************************************************");
+            console.log(response.data);
+            console.log("********************************************************************");
+        })
+        .catch(function (error) {
+            if (error.response) {
                 console.log("---------------Data---------------");
                 console.log(error.response.data);
                 console.log("---------------Status---------------");
