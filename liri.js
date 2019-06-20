@@ -13,7 +13,7 @@ inquirer.prompt([
     {
         type: "list",
         message: "What would you like to do?",
-        choices: ["Search for concerts."],
+        choices: ["Search for concerts.", "Search Spotify for songs."],
         name: "selection"
     }
 ])
@@ -27,9 +27,21 @@ inquirer.prompt([
                         name: "choice"
                     }
                 ])
-                .then(function(answer) {
-                    concertSearch(answer.choice.trim());
-                });
+                    .then(function (answer) {
+                        concertSearch(answer.choice.trim());
+                    });
+                break;
+            case "Search Spotify for songs.":
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        message: "What is the name of the song you are searching for?",
+                        name: "choice"
+                    }
+                ])
+                    .then(function (answer) {
+                        spotifySearch(answer.choice.trim());
+                    });
                 break;
         }
     });
@@ -57,6 +69,22 @@ function concertSearch(performer) {
                 console.log("Error", error.message);
             }
             console.log(error.config);
+        });
+}
+
+function spotifySearch(song) {
+    spotify
+        .search({ type: 'track', query: song, limit: 1 })
+        .then(function (response) {
+            console.log("====================================================================");
+            console.log(response.tracks.items[0].album.artists[0].name);
+            console.log(response.tracks.items[0].name);
+            console.log(response.tracks.items[0].external_urls.spotify);
+            console.log(response.tracks.items[0].album.name);
+            console.log("====================================================================");
+        })
+        .catch(function (err) {
+            console.log(err);
         });
 }
 
