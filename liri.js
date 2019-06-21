@@ -81,12 +81,27 @@ function concertSearch(performer) {
         .get("https://rest.bandsintown.com/artists/" + performer + "/events?app_id=codingbootcamp")
         .then(function (response) {
             console.log("\n------------------------------" + response.data[0].lineup[0] + "------------------------------\n")
+            fs.appendFile("log.txt", response.data[0].lineup[0] + "\n\n", function (err) {
+
+                if (err) {
+                    return console.log(err);
+                }
+            });
             for (var i = 0; i < response.data.length; i++) {
                 console.log("=======================================================================================\n");
-                console.log("Venue Name: " + response.data[i].venue.name);
-                console.log("City: " + response.data[i].venue.city);
-                console.log("Date(MM/DD/YYYY): " + moment(response.data[i].datetime).format('MM DD YYYY'));
-                console.log("\n=======================================================================================\n");
+
+                var result = "Venue Name: " + response.data[i].venue.name + "\n"
+                    + "City: " + response.data[i].venue.city + "\n"
+                    + "Date(MM/DD/YYYY): " + moment(response.data[i].datetime).format('MM DD YYYY') + "\n"
+
+                fs.appendFile("log.txt", result + "\n", function (err) {
+
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+                console.log(result);
+                console.log("=======================================================================================\n");
             }
         })
         .catch(function (error) {
@@ -116,11 +131,19 @@ function spotifySearch(song) {
         .then(function (response) {
             for (var i = 0; i < 3; i++) {
                 console.log("=======================================================================================\n");
-                console.log("Artist/Band: " + response.tracks.items[i].album.artists[0].name);
-                console.log("Song: " + response.tracks.items[i].name);
-                console.log("Album: " + response.tracks.items[i].album.name);
-                console.log("Spotify Song Link: " + response.tracks.items[i].external_urls.spotify);
-                console.log("\n=======================================================================================\n");
+                var result = "Artist/Band: " + response.tracks.items[i].album.artists[0].name + "\n"
+                    + "Song: " + response.tracks.items[i].name + "\n"
+                    + "Album: " + response.tracks.items[i].album.name + "\n"
+                    + "Spotify Song Link: " + response.tracks.items[i].external_urls.spotify + "\n"
+
+                fs.appendFile("log.txt", result + "\n", function (err) {
+
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+                console.log(result);
+                console.log("=======================================================================================\n");
             }
         })
         .catch(function (err) {
@@ -138,15 +161,23 @@ function movieSearch(movie) {
             makeASCII(response.data.Title);
             setTimeout(function () {
                 console.log("\n=======================================================================================\n");
-                console.log("Title: " + response.data.Title);
-                console.log("Year: " + response.data.Year);
-                console.log("IMDB Rating: " + response.data.imdbRating);
-                console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-                console.log("Country(s): " + response.data.Country);
-                console.log("Language: " + response.data.Language);
-                console.log("Plot: " + response.data.Plot);
-                console.log("Actors: " + response.data.Actors);
-                console.log("\n=======================================================================================\n");
+                var result = "Title: " + response.data.Title + "\n"
+                    + "Year: " + response.data.Year + "\n"
+                    + "IMDB Rating: " + response.data.imdbRating + "\n"
+                    + "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value + "\n"
+                    + "Country(s): " + response.data.Country + "\n"
+                    + "Language: " + response.data.Language + "\n"
+                    + "Plot: " + response.data.Plot + "\n"
+                    + "Actors: " + response.data.Actors + "\n"
+
+                fs.appendFile("log.txt", result + "\n", function (err) {
+
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+                console.log(result);
+                console.log("=======================================================================================\n");
             }, 1000);
         })
         .catch(function (error) {
