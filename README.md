@@ -20,15 +20,21 @@ This program is a simple liri-bot used to search for concerts using [Bands in To
 ```gitbash
 git clone https://github.com/JakeDudum/liri-node-app.git
 ```
-2. Next enter the following to install required npm packages:
+2. Next cd into the newly created directory enter the following to install required npm packages:
 ```gitbash
 npm install
 ```
-3. Enter the following to start the program:
+3. Create a `.env` file inside the directory and copy paste the following:
+```
+# Spotify API keys
+SPOTIFY_ID=8441dac080054b96bc8f63762e722e7a
+SPOTIFY_SECRET=a38c8e8b0c524b7caec1a72cdfaa9758
+```
+4. Enter the following to start the program:
 ```gitbash
 node liri.js
 ```
-4. The following options should then appear:
+5. The following options should then appear:
 ```gitbash
 this is loaded
 ? What would you like to do? (Use arrow keys)
@@ -38,8 +44,8 @@ this is loaded
   Surprise me.
   Leave
 ```
-5. Follow the instructions of the program and select desired functionality.
-6. Enjoy!
+6. Follow the instructions of the program and select desired functionality.
+7. Enjoy!
 
 # Built With
 - [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
